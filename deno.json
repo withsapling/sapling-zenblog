@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "A blog built with Sapling and Zenblog",
   "license": "MIT",
-  "scripts": {
+  "tasks": {
     "start": "deno run --env-file=.env -A --watch index.ts",
-    "dev": "ENV=development deno run --env-file=.env -A --watch index.ts"
+    "dev": "ENV=development deno run --env-file=.env -A --watch index.ts",
+    "dev:site": "ENV=development deno run --env-file=.env -A --watch site.ts"
   },
   "imports": {
     "@portabletext/to-html": "npm:@portabletext/to-html@^2.0.13",
@@ -15,6 +16,9 @@
     "@sapling/sapling": "jsr:@sapling/sapling@^0.5.0",
     "unocss": "npm:unocss@^66.0.0",
     "zenblog": "npm:zenblog@^0.6.4"
+  },
+  "exports": {
+    ".": "./index.ts"
   },
   "nodeModulesDir": "auto"
 }

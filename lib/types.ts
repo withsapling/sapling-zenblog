@@ -6,19 +6,23 @@ export interface Author {
   bio?: string;
 }
 
-// We need to make sure TypeScript recognizes our extensions to the zenblog types
-declare module "zenblog" {
-  interface Post {
-    authors?: Author[];
-  }
+export interface Category {
+  name: string;
+  slug: string;
+}
 
-  interface PostWithContent {
-    authors?: Author[];
-  }
+// Define our Post interface with all needed properties
+export interface Post {
+  title: string;
+  slug: string;
+  published_at: string;
+  cover_image: string;
+  excerpt?: string;
+  content?: string;
+  category?: Category;
+  authors?: Author[];
+  [key: string]: any; // Allow for additional properties
 }
 
 // Also add type for the author parameter in map functions
-export type PostWithAuthors = {
-  authors?: Author[];
-  [key: string]: any;
-};
+export type PostWithAuthors = Post;

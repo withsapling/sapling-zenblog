@@ -1,15 +1,15 @@
 import { html } from "@sapling/sapling";
 import BlogLayout from "../layouts/BlogLayout.ts";
-import { BLOG_TITLE } from "../lib/constants.ts";
 import { getPosts, getCategories } from "../lib/zenblogClient.ts";
 import { formatDate } from "../lib/dates.ts";
-import "../lib/types.ts"; // Import types to extend Post interface
+import { Author, Post } from "../lib/types.ts"; // Import both Author and Post types
+import { type SiteSettings } from "../index.ts";
 
-// Revalidation similar to Next.js
-// Sapling doesn't have built-in revalidation, but this is a comment for reference
-// export const revalidate = 300;
+export interface BlogProps {
+  siteSettings: SiteSettings;
+}
 
-export async function Blog() {
+export async function Blog({ siteSettings }: BlogProps) {
   // Get posts and categories
   const { data: posts } = await getPosts();
   const { data: categories } = await getCategories();
@@ -19,14 +19,17 @@ export async function Blog() {
     return (
       new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
     );
-  })[0];
+  })[0] as Post; // Cast to our Post type
 
   // Filter out the featured post from the remaining posts
-  const postsWithoutLast = posts.filter((post) => post.slug !== lastPost.slug);
+  const postsWithoutLast = posts.filter(
+    (post) => post.slug !== lastPost.slug
+  ) as Post[];
 
   return await BlogLayout({
-    title: BLOG_TITLE,
-    description: "Welcome to ZenBlog",
+    title: siteSettings.title,
+    description: siteSettings.description,
+    siteSettings,
     children: html`
       <div class="p-4 space-y-12">
         <div>
@@ -76,7 +79,7 @@ export async function Blog() {
                 ? html`
                     <div class="flex gap-2 mt-4">
                       ${lastPost.authors.map(
-                        (author) => html`
+                        (author: Author) => html`
                           <div
                             class="flex gap-2 items-center text-sm font-medium text-slate-500"
                           >
@@ -155,7 +158,7 @@ export async function Blog() {
                     ? html`
                         <div class="flex gap-2 mt-4">
                           ${post.authors.map(
-                            (author) => html`
+                            (author: Author) => html`
                               <div
                                 class="flex gap-2 items-center text-sm font-medium text-slate-500"
                               >

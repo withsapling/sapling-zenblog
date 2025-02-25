@@ -1,19 +1,23 @@
 import { html, type LayoutProps } from "@sapling/sapling";
 import Layout, { type BaseLayoutProps } from "./Layout.ts";
-import { BLOG_TITLE } from "../lib/constants.ts";
+import { type SiteSettings } from "../index.ts";
 
-export type BlogLayoutProps = BaseLayoutProps;
+export interface BlogLayoutProps extends BaseLayoutProps {
+  siteSettings: SiteSettings;
+}
 
 export default async function BlogLayout(props: BlogLayoutProps) {
+  const { siteSettings, ...restProps } = props;
+
   return await Layout({
-    ...props,
+    ...restProps,
     children: html`
       <div class="bg-slate-50">
         <div class="max-w-5xl mx-auto">
           <nav
             class="p-4 border-b border-slate-200 flex justify-between items-center"
           >
-            <a class="text-lg font-semibold" href="/">${BLOG_TITLE}</a>
+            <a class="text-lg font-semibold" href="/">${siteSettings.title}</a>
             <a href="/">Home</a>
           </nav>
           ${props.children}

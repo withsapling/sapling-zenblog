@@ -2,17 +2,20 @@ import { html } from "@sapling/sapling";
 import BlogLayout from "../layouts/BlogLayout.ts";
 import { getPosts, getCategories } from "../lib/zenblogClient.ts";
 import { formatDate } from "../lib/dates.ts";
-import "../lib/types.ts";
+import { Author, Post } from "../lib/types.ts";
+import { type SiteSettings } from "../index.ts";
 
 type BlogCategoryProps = {
   params: {
     slug: string;
   };
+  siteSettings: SiteSettings;
 };
 
 export async function BlogCategory(props: BlogCategoryProps) {
   const { data: posts } = await getPosts();
   const { data: categories } = await getCategories();
+  const { siteSettings } = props;
 
   // Find the current category
   const currentCategory = categories.find(
@@ -31,6 +34,7 @@ export async function BlogCategory(props: BlogCategoryProps) {
   return await BlogLayout({
     title: `${currentCategory.name} - Blog`,
     description: `Posts in the ${currentCategory.name} category`,
+    siteSettings,
     children: html`
       <div class="p-4 space-y-12">
         <div>

@@ -1,8 +1,15 @@
 import { Layout as LayoutComponent, html } from "@sapling/sapling";
 import { BaseHead } from "../components/BaseHead.ts";
 import { config } from "../uno.config.ts";
+import { type SiteSettings } from "../index.ts";
 
-export default async function NotFoundLayout() {
+export interface NotFoundLayoutProps {
+  siteSettings: SiteSettings;
+}
+
+export default async function NotFoundLayout({
+  siteSettings,
+}: NotFoundLayoutProps) {
   return await LayoutComponent({
     unoConfig: config,
     head: html` ${await BaseHead({

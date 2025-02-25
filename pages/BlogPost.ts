@@ -4,15 +4,18 @@ import { getPostBySlug } from "../lib/zenblogClient.ts";
 import { formatDate } from "../lib/dates.ts";
 import "../lib/types.ts";
 import { Author } from "../lib/types.ts";
+import { type SiteSettings } from "../index.ts";
 
 type BlogPostProps = {
   params: {
     slug: string;
   };
+  siteSettings: SiteSettings;
 };
 
 export async function BlogPost(props: BlogPostProps) {
   const { data: post } = await getPostBySlug(props.params.slug);
+  const { siteSettings } = props;
 
   if (!post) {
     return html`<div>Post not found</div>`;
@@ -21,6 +24,7 @@ export async function BlogPost(props: BlogPostProps) {
   return await BlogLayout({
     title: post.title,
     description: post.excerpt,
+    siteSettings,
     children: html`
       <article class="mx-auto mt-8 space-y-12 px-6">
         <header class="max-w-2xl mx-auto space-y-8">
