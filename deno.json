@@ -1,5 +1,9 @@
 {
-  "tasks": {
+  "name": "@sapling/sapling-zenblog",
+  "version": "0.0.1",
+  "description": "A blog built with Sapling and Zenblog",
+  "license": "MIT",
+  "scripts": {
     "start": "deno run --env-file=.env -A --watch index.ts",
     "dev": "ENV=development deno run --env-file=.env -A --watch index.ts"
   },
