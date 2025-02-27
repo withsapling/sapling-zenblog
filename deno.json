@@ -15,6 +15,5 @@
     "unocss": "npm:unocss@^66.0.0",
     "zenblog": "npm:zenblog@^0.6.4"
   },
-
   "nodeModulesDir": "auto"
 }

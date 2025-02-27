@@ -1,12 +1,35 @@
-import { Sapling, serveStatic, type Context } from "@sapling/sapling";
+import {
+  Sapling,
+  serveStatic,
+  type Context,
+  type Next,
+} from "@sapling/sapling";
 import NotFoundLayout from "./layouts/NotFoundLayout.ts";
 import { Blog } from "./pages/Blog.ts";
 import { BlogPost } from "./pages/BlogPost.ts";
 import { BlogCategory } from "./pages/BlogCategory.ts";
 
+const isDev = Deno.env.get("ENV") === "development";
+
 const site = new Sapling({
-  dev: Deno.env.get("ENV") === "development",
+  dev: isDev,
 });
+
+// Cache static files for 5 minutes/300 seconds (stale-while-revalidate)
+async function cachingHeaderMiddleware(c: Context, next: Next) {
+  // ignore caching in development
+  if (isDev) {
+    return await next();
+  }
+  c.res.headers.set(
+    "Cache-Control",
+    "public, max-age=300, stale-while-revalidate=300"
+  );
+  return await next();
+}
+
+// Cache static files for 5 minutes (stale-while-revalidate)
+site.use(cachingHeaderMiddleware);
 
 // Home page
 site.get("/", async (c: Context) => c.html(await Blog()));
