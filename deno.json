@@ -1,5 +1,4 @@
 {
-  "name": "@sapling/sapling-zenblog",
   "version": "0.0.1",
   "description": "A blog built with Sapling and Zenblog",
   "license": "MIT",
@@ -16,5 +15,6 @@
     "unocss": "npm:unocss@^66.0.0",
     "zenblog": "npm:zenblog@^0.6.4"
   },
+
   "nodeModulesDir": "auto"
 }
